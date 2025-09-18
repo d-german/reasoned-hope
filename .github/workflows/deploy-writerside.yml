@@ -87,139 +87,15 @@ jobs:
           unzip -q webHelpHI2-all.zip -d docs
           ls -la docs/
 
-      - name: Setup Node.js for search integration
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install search dependencies
+      - name: Verify Writerside Algolia integration
         run: |
-          npm init -y
-          npm install algoliasearch@4.24.0 cheerio
+          echo "✅ Using Writerside's built-in Algolia integration"
+          echo "🔍 Search box appears in the top-right corner of all documentation pages"
+          echo "📊 Content indexing is handled automatically by Writerside during build"
+          echo "🎯 Algolia App ID: ${{ env.ALGOLIA_APP_ID }}"
+          echo "🎯 Algolia Index: ${{ env.ALGOLIA_INDEX_NAME }}"
 
-      - name: Create enhanced indexing script
-        run: |
-          cat > algolia-indexer.js << 'EOF'
-          const algoliasearch = require('algoliasearch');
-          const fs = require('fs');
-          const path = require('path');
-          const cheerio = require('cheerio');
 
-          const client = algoliasearch('${{ env.ALGOLIA_APP_ID }}', process.env.ALGOLIA_WRITE_API_KEY);
-          const index = client.initIndex('${{ env.ALGOLIA_INDEX_NAME }}');
-
-          async function indexContent() {
-            const docsPath = './artifacts/docs';
-            const records = [];
-
-            function processHtmlFile(filePath, relativePath) {
-              try {
-                const content = fs.readFileSync(filePath, 'utf8');
-                const $ = cheerio.load(content);
-
-                const title = $('title').text() || $('h1').first().text() || path.basename(relativePath, '.html');
-
-                const sections = [];
-                $('h1, h2, h3, h4, h5, h6').each((i, el) => {
-                  const heading = $(el);
-                  const level = parseInt(el.tagName.substring(1));
-                  const headingText = heading.text().trim();
-
-                  if (headingText) {
-                    let content = '';
-                    let nextEl = heading.next();
-
-                    while (nextEl.length && !nextEl.is('h1, h2, h3, h4, h5, h6')) {
-                      const text = nextEl.text().trim();
-                      if (text) content += text + ' ';
-                      nextEl = nextEl.next();
-                    }
-
-                    sections.push({
-                      heading: headingText,
-                      content: content.trim().substring(0, 800),
-                      level: level
-                    });
-                  }
-                });
-
-                if (sections.length === 0) {
-                  const bodyText = $('body').text().replace(/\s+/g, ' ').trim();
-                  if (bodyText) {
-                    sections.push({
-                      heading: title,
-                      content: bodyText.substring(0, 800),
-                      level: 1
-                    });
-                  }
-                }
-
-                sections.forEach((section, index) => {
-                  if (section.content) {
-                    records.push({
-                      objectID: relativePath + '#' + index,
-                      title: title,
-                      heading: section.heading,
-                      content: section.content,
-                      url: relativePath.replace(/\\\\/g, '/'),
-                      level: section.level,
-                      type: 'documentation'
-                    });
-                  }
-                });
-              } catch (error) {
-                console.warn('Error processing ' + filePath + ':', error.message);
-              }
-            }
-
-            function walkDirectory(dir, baseDir = dir) {
-              const files = fs.readdirSync(dir);
-
-              files.forEach(file => {
-                const filePath = path.join(dir, file);
-                const stat = fs.statSync(filePath);
-
-                if (stat.isDirectory()) {
-                  walkDirectory(filePath, baseDir);
-                } else if (file.endsWith('.html') && !file.includes('search.html')) {
-                  const relativePath = path.relative(baseDir, filePath);
-                  processHtmlFile(filePath, relativePath);
-                }
-              });
-            }
-
-            if (fs.existsSync(docsPath)) {
-              console.log('Starting content indexing...');
-              walkDirectory(docsPath);
-
-              if (records.length > 0) {
-                console.log('Indexing ' + records.length + ' records to Algolia...');
-                await index.replaceAllObjects(records);
-                console.log('✅ Algolia indexing completed successfully!');
-                console.log('📊 Total records indexed: ' + records.length);
-              } else {
-                console.log('⚠️ No content found to index.');
-              }
-            }
-          }
-
-          indexContent().catch(error => {
-            console.error('❌ Indexing failed:', error);
-            process.exit(1);
-          });
-          EOF
-
-      - name: Index content to Algolia
-        if: github.ref == 'refs/heads/main'
-        run: node algolia-indexer.js
-        env:
-          ALGOLIA_WRITE_API_KEY: ${{ secrets.ALGOLIA_WRITE_API_KEY }}
-
-      - name: Verify Algolia integration
-        run: |
-          echo "✅ Algolia search is now integrated directly into Writerside pages"
-          echo "🔍 Search will appear in the top-right corner of all documentation pages"
-          echo "📊 Content indexed: $(echo '${{ steps.index-content.outputs.records_count }}' || echo 'N/A') records"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
