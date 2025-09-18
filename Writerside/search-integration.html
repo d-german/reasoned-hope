@@ -1,0 +1,218 @@
+<!-- Writerside Algolia Search Integration for Reasoned Hope -->
+<style>
+    /* ───────────────────────────────────────────────────────────────
+       1. REMOVE Writerside "powered-by" FOOTER
+       ────────────────────────────────────────────────────────────── */
+    .app__footer {
+        display: none !important;
+    }
+
+    /* ───────────────────────────────────────────────────────────────
+       2. HIDE quick-search header & any Advanced-search button
+       ────────────────────────────────────────────────────────────── */
+    .quick-search__results-header,
+    [data-test="full-search-button"],
+    .quick-search__advanced-link,
+    .DocSearch-SeeAllResults,
+    button[aria-label="See all results"] {
+        display: none !important;
+    }
+
+    /* ───────────────────────────────────────────────────────────────
+       3. STYLE the placeholder text
+       ────────────────────────────────────────────────────────────── */
+    [data-test-id="search-input"]::placeholder {
+        color: #888 !important;
+        opacity: 1 !important;
+    }
+
+    /* ───────────────────────────────────────────────────────────────
+       4. HIDE search-copyright div
+       ────────────────────────────────────────────────────────────── */
+    [data-test="search-copyright"],
+    .search-copyright,
+    .DocSearch-Logo,
+    .DocSearch-PoweredBy {
+        display: none !important;
+    }
+
+    /* ───────────────────────────────────────────────────────────────
+       5. HIDE "Last modified" edit info
+       ────────────────────────────────────────────────────────────── */
+    .sub-title__edit-info {
+        display: none !important;
+    }
+
+    /* ───────────────────────────────────────────────────────────────
+       6. ENHANCE search box styling
+       ────────────────────────────────────────────────────────────── */
+    [data-test-id="search-input"] {
+        border-radius: 6px !important;
+        border: 1px solid #e1e5e9 !important;
+        transition: all 0.2s ease !important;
+    }
+
+    [data-test-id="search-input"]:focus {
+        border-color: #667eea !important;
+        box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1) !important;
+    }
+
+    /* ───────────────────────────────────────────────────────────────
+       7. IMPROVE search results styling
+       ────────────────────────────────────────────────────────────── */
+    .quick-search__results {
+        border-radius: 8px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        border: 1px solid #e1e5e9 !important;
+    }
+
+    .quick-search__item:hover {
+        background-color: #f8f9fa !important;
+    }
+
+    .quick-search__item-title {
+        color: #667eea !important;
+        font-weight: 600 !important;
+    }
+
+    .quick-search__item-content {
+        color: #6c757d !important;
+        font-size: 14px !important;
+    }
+
+    /* ───────────────────────────────────────────────────────────────
+       8. HIGHLIGHT search terms
+       ────────────────────────────────────────────────────────────── */
+    .quick-search__highlight {
+        background-color: #fff3cd !important;
+        color: #856404 !important;
+        font-weight: 600 !important;
+        padding: 1px 2px !important;
+        border-radius: 2px !important;
+    }
+</style>
+
+<script>
+    /* Enhanced search integration for Reasoned Hope documentation */
+    (function () {
+        /* ───── config ───── */
+        const INPUT_SEL = '[data-test-id="search-input"]';
+        const NEW_PLACEHOLDER = 'Search documentation...';
+        const BAD_SUFFIX = /\s*:\s*undefined\s*$/;
+
+        /* ───── helpers ───── */
+        function tidyTitle(el) {
+            if (el && BAD_SUFFIX.test(el.textContent))
+                el.textContent = el.textContent.replace(BAD_SUFFIX, '');
+        }
+
+        /** remove/replace placeholder + keep it that way */
+        function patchInput(inp) {
+            if (!inp) return;
+
+            // remove attribute and set property
+            inp.removeAttribute('placeholder');
+            inp.placeholder = NEW_PLACEHOLDER;
+
+            // if Writerside rewrites it later, patch again
+            new MutationObserver(muts =>
+                muts.forEach(m => {
+                    if (m.attributeName === 'placeholder' &&
+                        inp.placeholder !== NEW_PLACEHOLDER) {
+                        inp.removeAttribute('placeholder');
+                        inp.placeholder = NEW_PLACEHOLDER;
+                    }
+                })
+            ).observe(inp, {attributes: true, attributeFilter: ['placeholder']});
+        }
+
+        /** enhance search results with better formatting */
+        function enhanceSearchResults() {
+            // Add keyboard shortcuts info
+            const searchContainer = document.querySelector('.quick-search');
+            if (searchContainer && !searchContainer.querySelector('.search-shortcuts')) {
+                const shortcutsDiv = document.createElement('div');
+                shortcutsDiv.className = 'search-shortcuts';
+                shortcutsDiv.style.cssText = `
+                    position: absolute;
+                    top: 50%;
+                    right: 10px;
+                    transform: translateY(-50%);
+                    font-size: 12px;
+                    color: #6c757d;
+                    pointer-events: none;
+                `;
+                shortcutsDiv.innerHTML = 'Ctrl+K';
+                
+                const inputContainer = searchContainer.querySelector('.quick-search__input-container');
+                if (inputContainer) {
+                    inputContainer.style.position = 'relative';
+                    inputContainer.appendChild(shortcutsDiv);
+                }
+            }
+        }
+
+        /** add keyboard shortcuts */
+        function addKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                // Focus search on Ctrl+K or Cmd+K
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    const searchInput = document.querySelector(INPUT_SEL);
+                    if (searchInput) {
+                        searchInput.focus();
+                    }
+                }
+                
+                // Escape to clear search
+                if (e.key === 'Escape') {
+                    const searchInput = document.querySelector(INPUT_SEL);
+                    if (searchInput && document.activeElement === searchInput) {
+                        searchInput.blur();
+                    }
+                }
+            });
+        }
+
+        /* ───── initialise once the DOM is ready ───── */
+        function init() {
+            /* clean any titles already rendered */
+            document.querySelectorAll('.quick-search__title').forEach(tidyTitle);
+
+            /* patch existing input(s) */
+            document.querySelectorAll(INPUT_SEL).forEach(patchInput);
+
+            /* enhance search results */
+            enhanceSearchResults();
+
+            /* add keyboard shortcuts */
+            addKeyboardShortcuts();
+
+            /* observe future DOM changes */
+            new MutationObserver(muts =>
+                muts.forEach(m =>
+                    m.addedNodes.forEach(node => {
+                        if (node.nodeType === 1) { // Element node
+                            node.querySelectorAll?.('.quick-search__title').forEach(tidyTitle);
+                            if (node.matches?.('.quick-search__title')) tidyTitle(node);
+
+                            node.querySelectorAll?.(INPUT_SEL).forEach(patchInput);
+                            if (node.matches?.(INPUT_SEL)) patchInput(node);
+
+                            // Re-enhance search results when they change
+                            if (node.matches?.('.quick-search') || node.querySelector?.('.quick-search')) {
+                                setTimeout(enhanceSearchResults, 100);
+                            }
+                        }
+                    })
+                )
+            ).observe(document.body, {childList: true, subtree: true});
+
+            console.log('🔍 Reasoned Hope search integration loaded successfully');
+        }
+
+        document.readyState === 'loading'
+            ? document.addEventListener('DOMContentLoaded', init)
+            : init();
+    })();
+</script>

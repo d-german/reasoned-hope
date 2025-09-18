@@ -10,7 +10,7 @@
         <algolia-api-key>a2cfec1657f42aeb0733ad007973767f</algolia-api-key>
         <algolia-show-logo>false</algolia-show-logo>
         <include-in-head>search-integration.html</include-in-head>
-        <custom-css>static/custom.css</custom-css>
+        <custom-css>custom.css</custom-css>
     </variables>
 
     <build-profile instance="hi">

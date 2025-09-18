@@ -1,0 +1,160 @@
+/* Custom styling for Reasoned Hope documentation */
+
+/* ───────────────────────────────────────────────────────────────
+   1. SEARCH RESULT ENHANCEMENTS
+   ────────────────────────────────────────────────────────────── */
+.SearchHit_subtitle {
+    /* Hide subtitle to clean up search results */
+    display: none;
+}
+
+/* Enhanced search hit styling */
+.quick-search__item {
+    transition: all 0.2s ease;
+    border-radius: 6px;
+    margin: 2px 0;
+}
+
+.quick-search__item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(2px);
+}
+
+/* ───────────────────────────────────────────────────────────────
+   2. SEARCH INPUT ENHANCEMENTS
+   ────────────────────────────────────────────────────────────── */
+[data-test-id="search-input"] {
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid #e1e5e9;
+    transition: all 0.3s ease;
+    background-color: #fff;
+}
+
+[data-test-id="search-input"]:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    background-color: #fff;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   3. SEARCH DROPDOWN STYLING
+   ────────────────────────────────────────────────────────────── */
+.quick-search__results {
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e1e5e9;
+    background-color: #fff;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.quick-search__item-title {
+    color: #667eea;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.quick-search__item-content {
+    color: #6c757d;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   4. HIGHLIGHT STYLING
+   ────────────────────────────────────────────────────────────── */
+.quick-search__highlight,
+mark {
+    background-color: #fff3cd;
+    color: #856404;
+    font-weight: 600;
+    padding: 1px 3px;
+    border-radius: 3px;
+    box-decoration-break: clone;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   5. RESPONSIVE SEARCH
+   ────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    [data-test-id="search-input"] {
+        font-size: 16px; /* Prevent zoom on iOS */
+        padding: 10px 14px;
+    }
+    
+    .quick-search__results {
+        margin-top: 4px;
+        border-radius: 8px;
+    }
+}
+
+/* ───────────────────────────────────────────────────────────────
+   6. SEARCH CONTAINER POSITIONING
+   ────────────────────────────────────────────────────────────── */
+.quick-search {
+    position: relative;
+}
+
+.quick-search__input-container {
+    position: relative;
+}
+
+/* Keyboard shortcut hint */
+.search-shortcuts {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    font-size: 11px;
+    color: #9ca3af;
+    pointer-events: none;
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+[data-test-id="search-input"]:focus + .search-shortcuts,
+[data-test-id="search-input"]:not(:placeholder-shown) + .search-shortcuts {
+    opacity: 0;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   7. DARK MODE SUPPORT
+   ────────────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+    [data-test-id="search-input"] {
+        background-color: #1f2937;
+        border-color: #374151;
+        color: #f9fafb;
+    }
+    
+    [data-test-id="search-input"]:focus {
+        border-color: #667eea;
+        background-color: #1f2937;
+    }
+    
+    .quick-search__results {
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+    
+    .quick-search__item:hover {
+        background-color: #374151;
+    }
+    
+    .quick-search__item-content {
+        color: #9ca3af;
+    }
+    
+    .search-shortcuts {
+        background: #374151;
+        color: #9ca3af;
+    }
+}
