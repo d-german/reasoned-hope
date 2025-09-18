@@ -47,45 +47,95 @@
 <script>
     /* Search integration for Reasoned Hope documentation with facet filter fix */
     (function () {
-        /* ───── Patch Algolia requests to remove problematic facet filters ───── */
-        const originalFetch = window.fetch;
-        window.fetch = function(input, init) {
-            const url = typeof input === 'string' ? input : input?.url;
+        console.log('🔍 Initializing Algolia facet filter patch...');
 
-            if (url && url.includes('algolia.net') && init?.body) {
-                try {
-                    let body = init.body;
+        /* ───── Comprehensive Algolia request patching ───── */
 
-                    // Handle JSON body
-                    if (typeof body === 'string' && body.trim().startsWith('{')) {
-                        const data = JSON.parse(body);
-                        if (data.facetFilters) {
-                            console.log('🔧 Removing facet filters:', data.facetFilters);
-                            data.facetFilters = [];
+        // Patch fetch
+        if (window.fetch) {
+            const originalFetch = window.fetch;
+            window.fetch = function(input, init) {
+                const url = typeof input === 'string' ? input : input?.url;
+
+                if (url && url.includes('algolia.net')) {
+                    console.log('🔍 Intercepted Algolia fetch request:', url);
+
+                    if (init?.body) {
+                        try {
+                            let body = init.body;
+                            let modified = false;
+
+                            // Handle JSON body
+                            if (typeof body === 'string' && body.trim().startsWith('{')) {
+                                const data = JSON.parse(body);
+                                if (data.facetFilters && data.facetFilters.length > 0) {
+                                    console.log('🔧 Removing facet filters from JSON body:', data.facetFilters);
+                                    data.facetFilters = [];
+                                    init.body = JSON.stringify(data);
+                                    modified = true;
+                                }
+                            }
+
+                            // Handle form-encoded body
+                            if (typeof body === 'string' && body.includes('facetFilters=')) {
+                                console.log('🔧 Removing facet filters from form body');
+                                init.body = body.replace(/facetFilters=%5B[^&]*%5D/g, 'facetFilters=%5B%5D');
+                                modified = true;
+                            }
+
+                            if (modified) {
+                                console.log('✅ Modified Algolia request body');
+                            }
+                        } catch (e) {
+                            console.warn('❌ Failed to modify Algolia request:', e);
                         }
-                        init.body = JSON.stringify(data);
                     }
-
-                    // Handle form-encoded body (params=...)
-                    if (typeof body === 'string' && body.includes('params=')) {
-                        const paramsMatch = body.match(/params=([^&]+)/);
-                        if (paramsMatch) {
-                            const decodedParams = decodeURIComponent(paramsMatch[1]);
-                            const modifiedParams = decodedParams.replace(
-                                /"facetFilters":\[[^\]]*\]/g,
-                                '"facetFilters":[]'
-                            );
-                            init.body = body.replace(paramsMatch[1], encodeURIComponent(modifiedParams));
-                            console.log('🔧 Removed facet filters from search request');
-                        }
-                    }
-                } catch (e) {
-                    console.warn('Failed to modify Algolia request:', e);
                 }
-            }
 
-            return originalFetch.apply(this, arguments);
-        };
+                return originalFetch.apply(this, arguments);
+            };
+            console.log('✅ Fetch patched');
+        }
+
+        // Patch XMLHttpRequest
+        if (window.XMLHttpRequest) {
+            const OriginalXHR = window.XMLHttpRequest;
+            const originalOpen = OriginalXHR.prototype.open;
+            const originalSend = OriginalXHR.prototype.send;
+
+            let currentUrl = '';
+
+            OriginalXHR.prototype.open = function(method, url, ...args) {
+                currentUrl = url || '';
+                return originalOpen.apply(this, [method, url, ...args]);
+            };
+
+            OriginalXHR.prototype.send = function(body) {
+                if (currentUrl.includes('algolia.net') && body) {
+                    console.log('🔍 Intercepted Algolia XHR request:', currentUrl);
+
+                    try {
+                        let modifiedBody = body;
+
+                        if (typeof body === 'string') {
+                            if (body.includes('facetFilters')) {
+                                console.log('🔧 Removing facet filters from XHR body');
+                                modifiedBody = body.replace(/facetFilters=%5B[^&]*%5D/g, 'facetFilters=%5B%5D');
+                                modifiedBody = modifiedBody.replace(/"facetFilters":\[[^\]]*\]/g, '"facetFilters":[]');
+                                console.log('✅ Modified XHR request body');
+                            }
+                        }
+
+                        return originalSend.call(this, modifiedBody);
+                    } catch (e) {
+                        console.warn('❌ Failed to modify XHR request:', e);
+                    }
+                }
+
+                return originalSend.apply(this, arguments);
+            };
+            console.log('✅ XMLHttpRequest patched');
+        }
 
         /* ───── config ───── */
         const INPUT_SEL = '[data-test-id="search-input"]';
