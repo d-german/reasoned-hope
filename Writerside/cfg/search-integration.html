@@ -45,8 +45,48 @@
 </style>
 
 <script>
-    /* Simple search integration for Reasoned Hope documentation */
+    /* Search integration for Reasoned Hope documentation with facet filter fix */
     (function () {
+        /* ───── Patch Algolia requests to remove problematic facet filters ───── */
+        const originalFetch = window.fetch;
+        window.fetch = function(input, init) {
+            const url = typeof input === 'string' ? input : input?.url;
+
+            if (url && url.includes('algolia.net') && init?.body) {
+                try {
+                    let body = init.body;
+
+                    // Handle JSON body
+                    if (typeof body === 'string' && body.trim().startsWith('{')) {
+                        const data = JSON.parse(body);
+                        if (data.facetFilters) {
+                            console.log('🔧 Removing facet filters:', data.facetFilters);
+                            data.facetFilters = [];
+                        }
+                        init.body = JSON.stringify(data);
+                    }
+
+                    // Handle form-encoded body (params=...)
+                    if (typeof body === 'string' && body.includes('params=')) {
+                        const paramsMatch = body.match(/params=([^&]+)/);
+                        if (paramsMatch) {
+                            const decodedParams = decodeURIComponent(paramsMatch[1]);
+                            const modifiedParams = decodedParams.replace(
+                                /"facetFilters":\[[^\]]*\]/g,
+                                '"facetFilters":[]'
+                            );
+                            init.body = body.replace(paramsMatch[1], encodeURIComponent(modifiedParams));
+                            console.log('🔧 Removed facet filters from search request');
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Failed to modify Algolia request:', e);
+                }
+            }
+
+            return originalFetch.apply(this, arguments);
+        };
+
         /* ───── config ───── */
         const INPUT_SEL = '[data-test-id="search-input"]';
         const NEW_PLACEHOLDER = 'Search documentation...';
