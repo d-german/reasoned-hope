@@ -7,9 +7,8 @@
         <resizable-sidebar>true</resizable-sidebar>
         <algolia-id>2TVOV323T5</algolia-id>
         <algolia-index>reasoned-hope-docs</algolia-index>
-        <algolia-api-key>73637d0f99d13697983b68027df485ff</algolia-api-key>
+        <algolia-api-key>a2cfec1657f42aeb0733ad007973767f</algolia-api-key>
         <algolia-show-logo>false</algolia-show-logo>
-        <algolia-query-params>{"facetFilters": []}</algolia-query-params>
         <include-in-head>search-integration.html</include-in-head>
         <custom-css>custom.css</custom-css>
     </variables>

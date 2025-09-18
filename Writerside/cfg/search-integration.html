@@ -42,136 +42,15 @@
     .sub-title__edit-info {
         display: none !important;
     }
-
-    /* ───────────────────────────────────────────────────────────────
-       6. ENHANCE search box styling
-       ────────────────────────────────────────────────────────────── */
-    [data-test-id="search-input"] {
-        border-radius: 6px !important;
-        border: 1px solid #e1e5e9 !important;
-        transition: all 0.2s ease !important;
-    }
-
-    [data-test-id="search-input"]:focus {
-        border-color: #667eea !important;
-        box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1) !important;
-    }
-
-    /* ───────────────────────────────────────────────────────────────
-       7. IMPROVE search results styling
-       ────────────────────────────────────────────────────────────── */
-    .quick-search__results {
-        border-radius: 8px !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-        border: 1px solid #e1e5e9 !important;
-    }
-
-    .quick-search__item:hover {
-        background-color: #f8f9fa !important;
-    }
-
-    .quick-search__item-title {
-        color: #667eea !important;
-        font-weight: 600 !important;
-    }
-
-    .quick-search__item-content {
-        color: #6c757d !important;
-        font-size: 14px !important;
-    }
-
-    /* ───────────────────────────────────────────────────────────────
-       8. HIGHLIGHT search terms
-       ────────────────────────────────────────────────────────────── */
-    .quick-search__highlight {
-        background-color: #fff3cd !important;
-        color: #856404 !important;
-        font-weight: 600 !important;
-        padding: 1px 2px !important;
-        border-radius: 2px !important;
-    }
 </style>
 
 <script>
-    /* Enhanced search integration for Reasoned Hope documentation */
+    /* Simple search integration for Reasoned Hope documentation */
     (function () {
         /* ───── config ───── */
         const INPUT_SEL = '[data-test-id="search-input"]';
         const NEW_PLACEHOLDER = 'Search documentation...';
         const BAD_SUFFIX = /\s*:\s*undefined\s*$/;
-
-        /* ───── network patch: remove Writerside's default facet filters (product/version) ───── */
-        (function patchAlgoliaRequests(){
-            const ALGOLIA_HOST_PATTERN = /\.algolia\.net\/.*\/indexes\//;
-            const stripFacetFiltersInParams = (paramsStr) => {
-                try {
-                    // params is URL-encoded key=value list; replace facetFilters with []
-                    const decoded = decodeURIComponent(paramsStr);
-                    const replaced = decoded.replace(/(?:^|&)?facetFilters=\[[^\]]*\]/, 'facetFilters=[]');
-                    return encodeURIComponent(replaced).replace(/%20/g, '+');
-                } catch { return paramsStr; }
-            };
-            const sanitizeBody = (body) => {
-                try {
-                    if (!body) return body;
-                    if (typeof body === 'string') {
-                        const trimmed = body.trim();
-                        // JSON body
-                        if (trimmed.startsWith('{')) {
-                            const obj = JSON.parse(trimmed);
-                            if (obj && obj.facetFilters !== undefined) obj.facetFilters = [];
-                            return JSON.stringify(obj);
-                        }
-                        // x-www-form-urlencoded (InstantSearch style)
-                        if (trimmed.includes('params=')) {
-                            return trimmed.replace(/params=([^&]+)/, (m, p1) => 'params=' + stripFacetFiltersInParams(p1));
-                        }
-                        // Multi-index requests format
-                        if (trimmed.startsWith('requests=')) {
-                            const json = JSON.parse(decodeURIComponent(trimmed.slice('requests='.length)));
-                            if (Array.isArray(json)) {
-                                json.forEach(r => {
-                                    if (r && typeof r.params === 'string') {
-                                        r.params = decodeURIComponent(stripFacetFiltersInParams(encodeURIComponent(r.params)));
-                                    }
-                                });
-                                return 'requests=' + encodeURIComponent(JSON.stringify(json));
-                            }
-                        }
-                    }
-                } catch { /* ignore */ }
-                return body;
-            };
-            // Patch fetch
-            const origFetch = window.fetch;
-            if (origFetch) {
-                window.fetch = function(input, init){
-                    try {
-                        const url = typeof input === 'string' ? input : (input && input.url);
-                        if (url && ALGOLIA_HOST_PATTERN.test(url) && init) {
-                            init.body = sanitizeBody(init.body);
-                        }
-                    } catch { /* noop */ }
-                    return origFetch.apply(this, arguments);
-                };
-            }
-            // Patch XHR
-            const OrigXHR = window.XMLHttpRequest;
-            if (OrigXHR) {
-                const Proto = OrigXHR.prototype;
-                const origOpen = Proto.open;
-                const origSend = Proto.send;
-                let lastIsAlgolia = false;
-                Proto.open = function(method, url){
-                    try { lastIsAlgolia = ALGOLIA_HOST_PATTERN.test(url || ''); } catch { lastIsAlgolia = false; }
-                    return origOpen.apply(this, arguments);
-                };
-                Proto.send = function(body){
-                    try { if (lastIsAlgolia) body = sanitizeBody(body); } catch { /* noop */ }
-                    return origSend.call(this, body);
-                };
-            }
-        })();
 
         /* ───── helpers ───── */
         function tidyTitle(el) {
@@ -199,54 +78,6 @@
             ).observe(inp, {attributes: true, attributeFilter: ['placeholder']});
         }
 
-        /** enhance search results with better formatting */
-        function enhanceSearchResults() {
-            // Add keyboard shortcuts info
-            const searchContainer = document.querySelector('.quick-search');
-            if (searchContainer && !searchContainer.querySelector('.search-shortcuts')) {
-                const shortcutsDiv = document.createElement('div');
-                shortcutsDiv.className = 'search-shortcuts';
-                shortcutsDiv.style.cssText = `
-                    position: absolute;
-                    top: 50%;
-                    right: 10px;
-                    transform: translateY(-50%);
-                    font-size: 12px;
-                    color: #6c757d;
-                    pointer-events: none;
-                `;
-                shortcutsDiv.innerHTML = 'Ctrl+K';
-                
-                const inputContainer = searchContainer.querySelector('.quick-search__input-container');
-                if (inputContainer) {
-                    inputContainer.style.position = 'relative';
-                    inputContainer.appendChild(shortcutsDiv);
-                }
-            }
-        }
-
-        /** add keyboard shortcuts */
-        function addKeyboardShortcuts() {
-            document.addEventListener('keydown', (e) => {
-                // Focus search on Ctrl+K or Cmd+K
-                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                    e.preventDefault();
-                    const searchInput = document.querySelector(INPUT_SEL);
-                    if (searchInput) {
-                        searchInput.focus();
-                    }
-                }
-                
-                // Escape to clear search
-                if (e.key === 'Escape') {
-                    const searchInput = document.querySelector(INPUT_SEL);
-                    if (searchInput && document.activeElement === searchInput) {
-                        searchInput.blur();
-                    }
-                }
-            });
-        }
-
         /* ───── initialise once the DOM is ready ───── */
         function init() {
             /* clean any titles already rendered */
@@ -254,12 +85,6 @@
 
             /* patch existing input(s) */
             document.querySelectorAll(INPUT_SEL).forEach(patchInput);
-
-            /* enhance search results */
-            enhanceSearchResults();
-
-            /* add keyboard shortcuts */
-            addKeyboardShortcuts();
 
             /* observe future DOM changes */
             new MutationObserver(muts =>
@@ -271,11 +96,6 @@
 
                             node.querySelectorAll?.(INPUT_SEL).forEach(patchInput);
                             if (node.matches?.(INPUT_SEL)) patchInput(node);
-
-                            // Re-enhance search results when they change
-                            if (node.matches?.('.quick-search') || node.querySelector?.('.quick-search')) {
-                                setTimeout(enhanceSearchResults, 100);
-                            }
                         }
                     })
                 )
