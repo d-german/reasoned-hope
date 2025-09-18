@@ -1,15 +1,17 @@
-﻿# Knowing versus Showing that Christianity is true
+# Knowing versus Showing that Christianity is True
 
-Knowing versus Showing that Christianity is true.
+## Properly Basic Beliefs
+
 There are many things we believe, even though we can't ever prove them, e.g.,
-● The world has existed more than five minutes.
-● Laws of Logic. ( The law of contradiction, the law of excluded middle , and
-the law of identity. )
-● It is wrong to hurt other people for fun.
-● The testimony of others
+
+- The world has existed more than five minutes.
+- Laws of Logic. (The law of contradiction, the law of excluded middle, and the law of identity.)
+- It is wrong to hurt other people for fun.
+- The testimony of others
+
 These things are called properly basic beliefs.
-We have an extremely strong sense that these beliefs are true (even if we can't
-prove them) and no reason to think that these beliefs are actually false.
+
+We have an extremely strong sense that these beliefs are true (even if we can't prove them) and no reason to think that these beliefs are actually false.
 Knowing versus Showing the Christianity is true.
 If I become aware of some defeater of one of my properly basic beliefs, then I
 should give it up (or find a defeater of the defeater).
@@ -68,4 +70,4 @@ Showing that Christianity is true.
 ● Remember, it's hard to be absolutely certain about many things. Of course,
 other people will also try to give arguments that you are wrong!
 ● But we can trust that the Witness of the Holy Spirit is always greater.
-● Our arguments are better than theirs
+● Our arguments are better than theirs!
