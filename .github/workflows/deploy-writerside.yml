@@ -90,12 +90,12 @@ jobs:
       - name: Setup Node.js for search integration
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install search dependencies
         run: |
           npm init -y
-          npm install algoliasearch cheerio
+          npm install algoliasearch@4.24.0 cheerio
 
       - name: Create enhanced indexing script
         run: |
