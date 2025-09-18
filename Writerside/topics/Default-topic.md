@@ -1,14 +1,30 @@
-# This is the first topic
+# Welcome to Reasoned Hope Documentation
 
-<!--Writerside adds this topic when you create a new documentation project.
-You can use it as a sandbox to play with Writerside features, and remove it from the TOC when you don't need it anymore.
-If you want to re-add it for your experiments, click + to create a new topic, choose Topic from Template, and select the 
-"Starter" template.-->
+Welcome to the Reasoned Hope documentation site! This comprehensive guide provides everything you need to understand and work with our project. Our documentation is built with JetBrains Writerside and features powerful search capabilities powered by Algolia.
 
-## Add new topics
+## 🔍 Search Your Way Through
+
+This documentation includes advanced search functionality that helps you find exactly what you're looking for:
+- **Real-time search** - Results appear as you type
+- **Content highlighting** - See your search terms highlighted in context
+- **Smart indexing** - All content is automatically indexed and kept up-to-date
+- **Hierarchical results** - Find information at the right level of detail
+
+Try searching for terms like "procedure", "markup", or "configuration" to see the search in action!
+
+## Getting Started
+
+### Add new topics
 You can create empty topics, or choose a template for different types of content that contains some boilerplate structure to help you get started:
 
 ![Create new topic options](new_topic_options.png){ border-effect="line" thumbnail="true" width="321"}
+
+### Documentation Structure
+Our documentation is organized into logical sections:
+- **Getting Started** - Basic concepts and initial setup
+- **User Guides** - Step-by-step instructions for common tasks
+- **Reference** - Detailed technical information
+- **Examples** - Practical code samples and use cases
 
 ## Write content
 %product% supports two types of markup: Markdown and XML.

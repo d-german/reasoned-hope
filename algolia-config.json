@@ -1,0 +1,59 @@
+{
+  "appId": "2TVOV323T5",
+  "indexName": "writerside-docs",
+  "searchApiKey": "a2cfec1657f42aeb0733ad007973767f",
+  "searchParameters": {
+    "hitsPerPage": 10,
+    "attributesToRetrieve": [
+      "title",
+      "heading",
+      "content",
+      "url",
+      "level",
+      "type"
+    ],
+    "attributesToHighlight": [
+      "title",
+      "heading",
+      "content"
+    ],
+    "attributesToSnippet": [
+      "content:50"
+    ],
+    "highlightPreTag": "<mark>",
+    "highlightPostTag": "</mark>",
+    "snippetEllipsisText": "…"
+  },
+  "indexSettings": {
+    "searchableAttributes": [
+      "title",
+      "heading",
+      "content"
+    ],
+    "attributesForFaceting": [
+      "type",
+      "level"
+    ],
+    "customRanking": [
+      "desc(level)"
+    ],
+    "ranking": [
+      "typo",
+      "geo",
+      "words",
+      "filters",
+      "proximity",
+      "attribute",
+      "exact",
+      "custom"
+    ]
+  },
+  "ui": {
+    "searchBoxPlaceholder": "Search documentation...",
+    "noResultsText": "No results found for your search.",
+    "searchButtonText": "Search",
+    "clearButtonText": "Clear",
+    "showSearchStats": true,
+    "showPoweredBy": true
+  }
+}
