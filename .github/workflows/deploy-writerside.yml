@@ -157,7 +157,7 @@ jobs:
                 sections.forEach((section, index) => {
                   if (section.content) {
                     records.push({
-                      objectID: \`\${relativePath}#\${index}\`,
+                      objectID: relativePath + '#' + index,
                       title: title,
                       heading: section.heading,
                       content: section.content,
@@ -168,7 +168,7 @@ jobs:
                   }
                 });
               } catch (error) {
-                console.warn(\`Error processing \${filePath}:\`, error.message);
+                console.warn('Error processing ' + filePath + ':', error.message);
               }
             }
 
@@ -193,7 +193,7 @@ jobs:
               walkDirectory(docsPath);
 
               if (records.length > 0) {
-                console.log(\`Indexing \${records.length} records to Algolia...\`);
+                console.log('Indexing ' + records.length + ' records to Algolia...');
                 await index.replaceAllObjects(records);
                 console.log('✅ Algolia indexing completed successfully!');
               } else {
