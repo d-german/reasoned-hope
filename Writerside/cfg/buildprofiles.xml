@@ -3,6 +3,20 @@
 <buildprofiles xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/build-profiles.xsd"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-    <variables></variables>
+    <variables>
+        <resizable-sidebar>true</resizable-sidebar>
+        <algolia-id>2TVOV323T5</algolia-id>
+        <algolia-index>reasoned-hope-docs</algolia-index>
+        <algolia-api-key>a2cfec1657f42aeb0733ad007973767f</algolia-api-key>
+        <algolia-show-logo>false</algolia-show-logo>
+        <include-in-head>search-integration.html</include-in-head>
+        <custom-css>static/custom.css</custom-css>
+    </variables>
+
+    <build-profile instance="hi">
+        <variables>
+            <noindex-content>false</noindex-content>
+        </variables>
+    </build-profile>
 
 </buildprofiles>

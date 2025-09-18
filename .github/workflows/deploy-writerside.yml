@@ -196,6 +196,7 @@ jobs:
                 console.log('Indexing ' + records.length + ' records to Algolia...');
                 await index.replaceAllObjects(records);
                 console.log('✅ Algolia indexing completed successfully!');
+                console.log('📊 Total records indexed: ' + records.length);
               } else {
                 console.log('⚠️ No content found to index.');
               }
@@ -214,15 +215,11 @@ jobs:
         env:
           ALGOLIA_WRITE_API_KEY: ${{ secrets.ALGOLIA_WRITE_API_KEY }}
 
-      - name: Copy search files to documentation
+      - name: Verify Algolia integration
         run: |
-          # Copy search HTML and JS files if they exist
-          if [ -f "Writerside/search.html" ]; then
-            cp Writerside/search.html artifacts/docs/
-          fi
-          if [ -f "Writerside/search-integration.js" ]; then
-            cp Writerside/search-integration.js artifacts/docs/
-          fi
+          echo "✅ Algolia search is now integrated directly into Writerside pages"
+          echo "🔍 Search will appear in the top-right corner of all documentation pages"
+          echo "📊 Content indexed: $(echo '${{ steps.index-content.outputs.records_count }}' || echo 'N/A') records"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

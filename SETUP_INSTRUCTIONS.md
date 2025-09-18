@@ -33,8 +33,8 @@ That's it for GitHub Pages setup!
    - ✅ Deploy to GitHub Pages
 
 3. **Your site will be available at:**
-   - **Documentation**: `https://yourusername.github.io/reasoned-hope/`
-   - **Search Page**: `https://yourusername.github.io/reasoned-hope/search.html`
+   - **Documentation**: `https://d-german.github.io/reasoned-hope/`
+   - **Search**: Integrated directly into every page (top-right corner)
 
 ### ⏱️ Timeline:
 - **First deployment**: ~5-10 minutes
@@ -43,11 +43,13 @@ That's it for GitHub Pages setup!
 
 ## 🔍 Search Features You'll Get:
 
-- ⚡ **Lightning-fast search** across all your documentation
-- 🎯 **Smart filtering** by content type and heading levels
-- 📱 **Mobile-friendly** search interface
-- ⌨️ **Keyboard shortcuts** (Ctrl+K to focus search)
-- 📊 **Search analytics** in your Algolia dashboard
+- ⚡ **Lightning-fast search** integrated directly into every documentation page
+- 🎯 **Search box in top-right corner** - just like your reference site!
+- 📱 **Mobile-friendly** search interface that works on all devices
+- ⌨️ **Keyboard shortcuts** (Ctrl+K to focus search, Escape to close)
+- 🎨 **Beautiful search results** with highlighted terms and clean styling
+- 📊 **Real-time search** as you type with instant results
+- 🔍 **No separate search page needed** - search is embedded in the main interface
 
 ## 🛠️ Why One Workflow File?
 
