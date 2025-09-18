@@ -1,12 +1,12 @@
-# Reasoned Hope: A Theological Documentation Project
+# Reasoned Hope: A Theological Resource
 
-Welcome to **Reasoned Hope**, a comprehensive theological documentation project dedicated to exploring and articulating
+Welcome to **Reasoned Hope**, a comprehensive resource dedicated to exploring and articulating
 the foundational doctrines of the Christian faith through rigorous biblical exegesis, philosophical analysis, and
 systematic theology.
 
 ## Purpose and Vision
 
-This documentation site serves as a scholarly resource for understanding the rational foundations of Christian belief.
+This project serves as a scholarly resource for understanding the rational foundations of Christian belief.
 Our mission is to provide clear, academically rigorous, and biblically grounded explanations of core Christian
 doctrines, equipping believers and seekers alike with the intellectual tools necessary to engage thoughtfully with
 matters of faith.
@@ -17,7 +17,7 @@ respect."
 
 ## Scope and Content
 
-This documentation project covers three foundational areas of Christian theology:
+This project covers three foundational areas of Christian theology:
 
 ### 1. Christian Apologetics
 
@@ -52,7 +52,7 @@ How God accomplished salvation through Christ's work:
 
 ## Academic Standards
 
-This documentation maintains high scholarly standards through:
+This resource maintains high scholarly standards through:
 
 - **Primary Source Analysis**: Extensive use of biblical texts in their original languages (Hebrew and Greek)
 - **Contemporary Scholarship**: Integration of current theological and philosophical research
