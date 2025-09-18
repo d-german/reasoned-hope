@@ -100,6 +100,79 @@
         const NEW_PLACEHOLDER = 'Search documentation...';
         const BAD_SUFFIX = /\s*:\s*undefined\s*$/;
 
+        /* ───── network patch: remove Writerside's default facet filters (product/version) ───── */
+        (function patchAlgoliaRequests(){
+            const ALGOLIA_HOST_PATTERN = /\.algolia\.net\/.*\/indexes\//;
+            const stripFacetFiltersInParams = (paramsStr) => {
+                try {
+                    // params is URL-encoded key=value list; replace facetFilters with []
+                    const decoded = decodeURIComponent(paramsStr);
+                    const replaced = decoded.replace(/(?:^|&)?facetFilters=\[[^\]]*\]/, 'facetFilters=[]');
+                    return encodeURIComponent(replaced).replace(/%20/g, '+');
+                } catch { return paramsStr; }
+            };
+            const sanitizeBody = (body) => {
+                try {
+                    if (!body) return body;
+                    if (typeof body === 'string') {
+                        const trimmed = body.trim();
+                        // JSON body
+                        if (trimmed.startsWith('{')) {
+                            const obj = JSON.parse(trimmed);
+                            if (obj && obj.facetFilters !== undefined) obj.facetFilters = [];
+                            return JSON.stringify(obj);
+                        }
+                        // x-www-form-urlencoded (InstantSearch style)
+                        if (trimmed.includes('params=')) {
+                            return trimmed.replace(/params=([^&]+)/, (m, p1) => 'params=' + stripFacetFiltersInParams(p1));
+                        }
+                        // Multi-index requests format
+                        if (trimmed.startsWith('requests=')) {
+                            const json = JSON.parse(decodeURIComponent(trimmed.slice('requests='.length)));
+                            if (Array.isArray(json)) {
+                                json.forEach(r => {
+                                    if (r && typeof r.params === 'string') {
+                                        r.params = decodeURIComponent(stripFacetFiltersInParams(encodeURIComponent(r.params)));
+                                    }
+                                });
+                                return 'requests=' + encodeURIComponent(JSON.stringify(json));
+                            }
+                        }
+                    }
+                } catch { /* ignore */ }
+                return body;
+            };
+            // Patch fetch
+            const origFetch = window.fetch;
+            if (origFetch) {
+                window.fetch = function(input, init){
+                    try {
+                        const url = typeof input === 'string' ? input : (input && input.url);
+                        if (url && ALGOLIA_HOST_PATTERN.test(url) && init) {
+                            init.body = sanitizeBody(init.body);
+                        }
+                    } catch { /* noop */ }
+                    return origFetch.apply(this, arguments);
+                };
+            }
+            // Patch XHR
+            const OrigXHR = window.XMLHttpRequest;
+            if (OrigXHR) {
+                const Proto = OrigXHR.prototype;
+                const origOpen = Proto.open;
+                const origSend = Proto.send;
+                let lastIsAlgolia = false;
+                Proto.open = function(method, url){
+                    try { lastIsAlgolia = ALGOLIA_HOST_PATTERN.test(url || ''); } catch { lastIsAlgolia = false; }
+                    return origOpen.apply(this, arguments);
+                };
+                Proto.send = function(body){
+                    try { if (lastIsAlgolia) body = sanitizeBody(body); } catch { /* noop */ }
+                    return origSend.call(this, body);
+                };
+            }
+        })();
+
         /* ───── helpers ───── */
         function tidyTitle(el) {
             if (el && BAD_SUFFIX.test(el.textContent))
