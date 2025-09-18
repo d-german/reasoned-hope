@@ -36,7 +36,7 @@ jobs:
       - name: Build Writerside docs using Docker
         uses: JetBrains/writerside-github-action@v4
         with:
-          instance: 'hi'
+          instance: 'Writerside/hi'
           artifact: 'webHelpHI2-all.zip'
           docker-version: '241.18775'
 
@@ -62,7 +62,7 @@ jobs:
       - name: Test documentation
         uses: JetBrains/writerside-checker-action@v1
         with:
-          instance: 'hi'
+          instance: 'Writerside/hi'
 
   deploy:
     needs: [build, test]
