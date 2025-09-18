@@ -1,99 +1,116 @@
-# Welcome to Reasoned Hope Documentation
+# Reasoned Hope: A Theological Documentation Project
 
-Welcome to the Reasoned Hope documentation site! This comprehensive guide provides everything you need to understand and work with our project. Our documentation is built with JetBrains Writerside and features powerful search capabilities powered by Algolia.
+Welcome to **Reasoned Hope**, a comprehensive theological documentation project dedicated to exploring and articulating the foundational doctrines of the Christian faith through rigorous biblical exegesis, philosophical analysis, and systematic theology.
 
-## 🔍 Search Your Way Through
+## Purpose and Vision
 
-This documentation includes advanced search functionality that helps you find exactly what you're looking for:
-- **Real-time search** - Results appear as you type
-- **Content highlighting** - See your search terms highlighted in context
-- **Smart indexing** - All content is automatically indexed and kept up-to-date
-- **Hierarchical results** - Find information at the right level of detail
+This documentation site serves as a scholarly resource for understanding the rational foundations of Christian belief. Our mission is to provide clear, academically rigorous, and biblically grounded explanations of core Christian doctrines, equipping believers and seekers alike with the intellectual tools necessary to engage thoughtfully with matters of faith.
 
-Try searching for terms like "procedure", "markup", or "configuration" to see the search in action!
+The name "Reasoned Hope" reflects our commitment to the apostolic mandate found in 1 Peter 3:15: "Always be prepared to give an answer to everyone who asks you to give the reason for the hope that you have. But do this with gentleness and respect."
+
+## Scope and Content
+
+This documentation project covers three foundational areas of Christian theology:
+
+### 1. Christian Apologetics
+
+The intellectual defense of the Christian faith, including:
+
+- Epistemological foundations for religious belief
+- Classical arguments for God's existence (Cosmological, Design, Moral)
+- Responses to major objections (Problem of Evil, Divine Hiddenness)
+- The relationship between faith and reason
+- Practical applications for sharing and defending the faith
+
+### 2. The Doctrine of the Trinity
+
+The biblical foundation for understanding God as three persons in one essence:
+
+- Old and New Testament evidence for the Trinity
+- Detailed exegesis of key passages
+- Jesus' divine self-understanding and claims
+- Responses to anti-Trinitarian arguments
+- Historical development of Trinitarian theology
+
+### 3. The Doctrine of the Atonement
+
+How God accomplished salvation through Christ's work:
+
+- The concepts of Imputation and Justification
+- Penal Substitution theory and its biblical foundation
+- Philosophical analysis of punishment and justice
+- Responses to contemporary objections
+- Practical implications for understanding salvation
+
+## Academic Standards
+
+This documentation maintains high scholarly standards through:
+
+- **Primary Source Analysis**: Extensive use of biblical texts in their original languages (Hebrew and Greek)
+- **Contemporary Scholarship**: Integration of current theological and philosophical research
+- **Balanced Presentation**: Fair representation of objections and alternative viewpoints
+- **Logical Rigor**: Systematic argumentation and clear reasoning
+- **Practical Application**: Connection between theoretical concepts and lived faith
+
+## Target Audiences
+
+The content is designed to serve multiple audiences:
+
+- **Seminary Students and Pastors**: Advanced theological education and ministry preparation
+- **Educated Believers**: Christians seeking deeper understanding of their faith
+- **Seekers and Skeptics**: Those investigating Christian claims with intellectual honesty
+- **Academic Researchers**: Scholars engaged in theological and philosophical study
+
+## Navigation and Organization
+
+The documentation is organized to facilitate both systematic study and targeted research:
+
+- **Foundational Topics**: Begin with Christian Apologetics to establish the rational framework
+- **Core Doctrines**: Progress through Trinity and Atonement as essential Christian beliefs
+- **Cross-References**: Extensive linking between related concepts and passages
+- **Difficulty Levels**: Content marked for introductory, intermediate, and advanced study
+- **Practical Applications**: Real-world implications and applications of theological concepts
+
+## Theological Perspective
+
+This project operates from an evangelical Protestant perspective, affirming:
+
+- The authority and inerrancy of Scripture
+- The historic Christian creeds and confessions
+- The necessity of both faith and reason in theological inquiry
+- The importance of careful biblical exegesis
+- The value of philosophical analysis in theological reflection
+
+## How to Use This Documentation
+
+### For Systematic Study
+
+Begin with the Christian Apologetics section to establish the epistemological foundations, then proceed through the Trinity and Atonement materials in order.
+
+### For Specific Research
+
+Use the search functionality and cross-reference system to locate specific topics, biblical passages, or theological concepts.
+
+### For Teaching and Ministry
+
+Each major section includes practical applications and teaching suggestions suitable for various educational contexts.
+
+### For Academic Research
+
+Detailed citations, original language analysis, and engagement with contemporary scholarship support advanced academic work.
+
+## Contributing and Feedback
+
+This documentation project represents ongoing theological reflection and scholarship. While maintaining doctrinal fidelity to historic Christian orthodoxy, we welcome constructive engagement with the ideas presented here.
 
 ## Getting Started
 
-### Add new topics
-You can create empty topics, or choose a template for different types of content that contains some boilerplate structure to help you get started:
+We recommend beginning your exploration with **Christian Apologetics**, which provides the rational foundation for understanding why Christian beliefs deserve serious intellectual consideration. From there, the doctrines of the Trinity and Atonement build upon this foundation to present a comprehensive picture of the Christian understanding of God and salvation.
 
-![Create new topic options](new_topic_options.png){ border-effect="line" thumbnail="true" width="321"}
+Whether you are a believer seeking to deepen your understanding, a skeptic investigating Christian claims, or a scholar engaged in theological research, we trust that these materials will provide valuable insights into the rich intellectual tradition of the Christian faith.
 
-### Documentation Structure
-Our documentation is organized into logical sections:
-- **Getting Started** - Basic concepts and initial setup
-- **User Guides** - Step-by-step instructions for common tasks
-- **Reference** - Detailed technical information
-- **Examples** - Practical code samples and use cases
+---
 
-## Write content
-%product% supports two types of markup: Markdown and XML.
-When you create a new help article, you can choose between two topic types, but this doesn't mean you have to stick to a single format.
-You can author content in Markdown and extend it with semantic attributes or inject entire XML elements.
+*"Come now, let us reason together," says the Lord.* - Isaiah 1:18
 
-For example, this is how you inject a procedure:
-
-<procedure title="Inject a procedure" id="inject-a-procedure">
-    <step>
-        <p>Start typing <code>procedure</code> and select a procedure type from the completion suggestions:</p>
-        <img src="completion_procedure.png" alt="completion suggestions for procedure" border-effect="line"/>
-    </step>
-    <step>
-        <p>Press <shortcut>Tab</shortcut> or <shortcut>Enter</shortcut> to insert the markup.</p>
-    </step>
-</procedure>
-
-And here is how you can include a snippet from a library:
-
-<include from="lib.md" element-id="sample"/>
-
-## Add interactive elements
-
-### Tabs
-To add switchable content, use tabs (start typing `tabs` on a new line).
-
-<tabs>
-    <tab title="Markdown">
-        <code-block lang="plain text">![Alt Text](new_topic_options.png){ width=450 }</code-block>
-    </tab>
-    <tab title="Semantic markup">
-        <code-block lang="xml">
-            <![CDATA[<img src="new_topic_options.png" alt="Alt text" width="450px"/>]]></code-block>
-    </tab>
-</tabs>
-
-### Collapsible blocks
-Besides injecting entire XML elements, you can use attributes to configure the behavior of certain elements.
-For example, you can collapse a chapter that contains non-essential information like this:
-
-#### Supplementary info {collapsible="true"}
-Content under such header will be collapsed by default, but you can modify the behavior by adding the following attribute:
-`default-state="expanded"`
-
-## Convert selection to XML
-If you need to extend an element with more functions, you can convert selected content from Markdown to semantic markup.
-For example, if you want to merge cells in a table, it's much easier to convert it to XML than do this in Markdown.
-Position the caret anywhere in the table and press <shortcut>Alt+Enter</shortcut>:
-
-<img src="convert_table_to_xml.png" alt="Convert table to XML" width="706" border-effect="line"/>
-
-## Feedback and support
-Please report any issues, usability improvements, or feature requests to our 
-<a href="https://youtrack.jetbrains.com/newIssue?project=WRS">YouTrack project</a>
-(you will need to register).
-
-You are welcome to join our
-<a href="https://jb.gg/WRS_Slack">public Slack workspace</a>.
-Before you do, please read our [Code of conduct](https://www.jetbrains.com/help/writerside/writerside-code-of-conduct.html).
-We assume that you’ve read and acknowledged it before joining.
-
-You can also always email us at [writerside@jetbrains.com](mailto:writerside@jetbrains.com).
-
-<seealso>
-    <category ref="wrs">
-        <a href="https://www.jetbrains.com/help/writerside/markup-reference.html">Markup reference</a>
-        <a href="https://www.jetbrains.com/help/writerside/manage-table-of-contents.html">Reorder topics in the TOC</a>
-        <a href="https://www.jetbrains.com/help/writerside/local-build.html">Build and publish</a>
-        <a href="https://www.jetbrains.com/help/writerside/configure-search.html">Configure Search</a>
-    </category>
-</seealso>
+*"And we know that the Son of God has come and has given us understanding, so that we may know him who is true."* - 1 John 5:20
