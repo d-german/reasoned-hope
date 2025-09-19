@@ -64,7 +64,7 @@ The deployment is handled by `.github/workflows/deploy.yml` which:
 Search is powered by Algolia with the following setup:
 - **Application ID**: `2TVOV323T5`
 - **Search API Key**: `a2cfec1657f42aeb0733ad007973767f` (public, read-only)
-- **Index Name**: `writerside-docs`
+- **Index Name**: `reasoned-hope-docs`
 
 The Write API Key is stored as a GitHub repository secret for security.
 
